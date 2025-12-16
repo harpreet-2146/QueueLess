@@ -15,49 +15,44 @@ app.get("/", (req, res) => {
   res.json({ status: "QueueLess API is running 🚀" });
 });
 
-// Send WhatsApp notification
+// Send WhatsApp notification via TextMeBot
 app.post("/api/send-whatsapp", async (req, res) => {
   const { phone, message } = req.body;
 
   if (!phone || !message) {
-    return res.status(400).json({ 
-      success: false, 
-      error: "Phone and message are required" 
+    return res.status(400).json({
+      success: false,
+      error: "Phone and message are required",
     });
   }
 
-  // Clean phone number - ensure it has country code
+  // Clean phone number - remove + and spaces, ensure country code
   let cleanPhone = phone.replace(/\D/g, "");
   if (!cleanPhone.startsWith("91") && cleanPhone.length === 10) {
     cleanPhone = "91" + cleanPhone;
   }
 
-  const apiKey = process.env.CALLMEBOT_API_KEY;
-
-  if (!apiKey) {
-    return res.status(500).json({ 
-      success: false, 
-      error: "API key not configured" 
-    });
-  }
+  const apiKey = process.env.TEXTMEBOT_API_KEY;
 
   try {
-    const url = `https://api.callmebot.com/whatsapp.php?phone=${cleanPhone}&text=${encodeURIComponent(message)}&apikey=${apiKey}`;
+    const url = `http://api.textmebot.com/send.php?recipient=${cleanPhone}&apikey=${apiKey}&text=${encodeURIComponent(message)}`;
+
+    console.log(`📤 Sending WhatsApp to ${cleanPhone}...`);
     
     const response = await axios.get(url);
-    
-    console.log(`✅ WhatsApp sent to ${cleanPhone}`);
-    
-    res.json({ 
-      success: true, 
-      message: "WhatsApp notification sent!" 
+
+    console.log(`✅ WhatsApp sent! Response:`, response.data);
+
+    res.json({
+      success: true,
+      message: "WhatsApp notification sent!",
     });
   } catch (error) {
-    console.error("❌ WhatsApp send failed:", error.message);
-    
-    res.status(500).json({ 
-      success: false, 
-      error: "Failed to send WhatsApp notification" 
+    console.error("❌ WhatsApp failed:", error.message);
+
+    res.status(500).json({
+      success: false,
+      error: "Failed to send WhatsApp",
     });
   }
 });
