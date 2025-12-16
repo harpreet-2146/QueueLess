@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useCart } from "../context/CartContext";
 import { useOrders } from "../context/OrderContext";
 import { getStallById } from "../data/stalls";
+import { sendWhatsAppMessage, messages } from "../utils/whatsapp";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -48,6 +49,25 @@ const Checkout = () => {
         items: cartItems,
         totalAmount,
       });
+
+      // Send order confirmation WhatsApp (in background)
+      const confirmationMessage = messages.orderPlaced(
+        order.tokenNumber,
+        stall.name,
+        customerName.trim(),
+        cartItems,
+        totalAmount
+      );
+
+      sendWhatsAppMessage(whatsappNumber.trim(), confirmationMessage)
+        .then((result) => {
+          if (result.success) {
+            console.log("✅ Order confirmation WhatsApp sent");
+          }
+        })
+        .catch((err) => {
+          console.log("WhatsApp confirmation failed, continuing anyway");
+        });
 
       clearCart();
       toast.success("Order placed successfully!");
@@ -190,25 +210,21 @@ const Checkout = () => {
                 />
               </div>
               <p className="text-xs text-gray-400 mt-2">
-                You'll receive order updates on this number
+                📱 You'll receive order confirmation & ready notification on WhatsApp
               </p>
             </div>
           </div>
         </div>
 
-        {/* CallMeBot Notice */}
+        {/* WhatsApp Info */}
         <div className="bg-green-50 border border-green-200 rounded-2xl p-4 mb-6">
           <p className="text-sm text-green-800">
-            <strong>📱 First time?</strong> To receive WhatsApp notifications,
-            save{" "}
-            <span className="font-mono bg-green-100 px-1 rounded">
-              +34 644 71 81 99
-            </span>{" "}
-            and send{" "}
-            <span className="font-mono bg-green-100 px-1 rounded">
-              I allow callmebot to send me messages
-            </span>
+            <strong>📲 What you'll receive:</strong>
           </p>
+          <ul className="text-sm text-green-700 mt-2 space-y-1">
+            <li>✅ Order confirmation with token number</li>
+            <li>✅ Notification when your food is ready</li>
+          </ul>
         </div>
 
         {/* Submit Button */}
@@ -222,7 +238,7 @@ const Checkout = () => {
           ) : (
             <>
               <Send size={20} />
-              Place Order
+              Place Order • ₹{totalAmount}
             </>
           )}
         </button>
