@@ -3,6 +3,7 @@ import { Toaster } from "react-hot-toast";
 import { CartProvider } from "./context/CartContext";
 import { OrderProvider } from "./context/OrderContext";
 import Navbar from "./components/Navbar";
+import LandingPage from "./pages/LandingPage";
 import Home from "./pages/Home";
 import StallMenu from "./pages/StallMenu";
 import Checkout from "./pages/Checkout";
@@ -19,8 +20,11 @@ function App() {
             <Navbar />
             <main className="pt-20 pb-10 px-4">
               <Routes>
+                {/* Landing */}
+                <Route path="/" element={<LandingPage />} />
+
                 {/* Customer Routes */}
-                <Route path="/" element={<Home />} />
+                <Route path="/customer" element={<Home />} />
                 <Route path="/stall/:stallId" element={<StallMenu />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/order/:orderId" element={<OrderStatus />} />
