@@ -72,7 +72,7 @@ const Checkout = () => {
           Add some delicious items from our stalls!
         </p>
         <Link
-          to="/"
+          to="/customer"
           className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-3 rounded-full font-medium hover:shadow-lg transition-all"
         >
           Browse Stalls

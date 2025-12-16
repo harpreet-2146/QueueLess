@@ -48,7 +48,7 @@ const OrderStatus = () => {
           This order doesn't exist or has expired
         </p>
         <Link
-          to="/"
+          to="/customer"
           className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-3 rounded-full font-medium"
         >
           <Home size={18} />
@@ -176,7 +176,7 @@ const OrderStatus = () => {
 
       {/* Home Button */}
       <Link
-        to="/"
+        to="/customer"
         className="flex items-center justify-center gap-2 w-full bg-gray-100 text-gray-700 py-4 rounded-2xl font-medium hover:bg-gray-200 transition-all"
       >
         <Home size={18} />

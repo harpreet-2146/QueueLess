@@ -26,7 +26,7 @@ const StallMenu = () => {
     <div className="max-w-2xl mx-auto">
       {/* Back button */}
       <Link
-        to="/"
+        to="/customer"
         className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-800 mb-6 transition-colors"
       >
         <ArrowLeft size={20} />
