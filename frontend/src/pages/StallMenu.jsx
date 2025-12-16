@@ -23,7 +23,7 @@ const StallMenu = () => {
   const showCart = totalItems > 0 && cartStallId === stall.id;
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="w-full max-w-7xl mx-auto px-4">
       {/* Back button */}
       <Link
         to="/customer"
@@ -60,7 +60,7 @@ const StallMenu = () => {
       {/* Menu Items */}
       <div className="mb-32">
         <h2 className="text-xl font-bold text-gray-800 mb-4">Menu</h2>
-        <div className="space-y-4">
+        <div className="grid grid-cols-2 gap-4">
           {stall.menu.map((item) => (
             <MenuItem key={item.id} item={item} stall={stall} />
           ))}
@@ -69,7 +69,7 @@ const StallMenu = () => {
 
       {/* Floating Cart Button */}
       {showCart && (
-        <div className="fixed bottom-6 left-4 right-4 max-w-2xl mx-auto">
+        <div className="fixed bottom-6 left-4 right-4 w-full max-w-7xl mx-auto px-4">
           <Link
             to="/checkout"
             className="flex items-center justify-between bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-4 rounded-2xl shadow-2xl hover:shadow-orange-500/30 transition-all"
