@@ -53,7 +53,7 @@ export const stalls = [
   {
     id: "south-express",
     name: "South Express",
-    image: "https://images.unsplash.com/photo-1668236543090-82eb5eadfd42?w=500",
+    image: "https://t4.ftcdn.net/jpg/02/17/39/75/360_F_217397519_MqLzfynUsUKGvZj1AB3iPREmr11sYRhk.jpg",
     description: "Authentic South Indian breakfast & snacks",
     rating: 4.7,
     waitTime: "15-20 min",
