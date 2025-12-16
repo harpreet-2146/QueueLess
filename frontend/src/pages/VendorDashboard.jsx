@@ -3,7 +3,7 @@ import { ArrowLeft, Package, Clock, ChefHat, CheckCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import { getStallById } from "../data/stalls";
 import { useOrders } from "../context/OrderContext";
-import { messages } from "../utils/whatsapp";
+import { sendWhatsAppMessage, messages } from "../utils/whatsapp";
 import OrderCard from "../components/OrderCard";
 
 const VendorDashboard = () => {
@@ -14,26 +14,38 @@ const VendorDashboard = () => {
   const orders = getOrdersByStall(stallId);
 
   const sendWhatsAppNotification = async (order) => {
-    const message = messages.orderReady(order.tokenNumber, order.stallName);
-    const phone = order.whatsappNumber;
+    const message = messages.orderReady(
+      order.tokenNumber,
+      order.stallName,
+      order.customerName
+    );
 
-    // For demo, we'll open WhatsApp web with the message
-    // In production with CallMeBot API key, this would be automatic
-    const whatsappUrl = `https://wa.me/91${phone}?text=${encodeURIComponent(message)}`;
+    toast.loading("Sending WhatsApp...", { id: "whatsapp" });
 
-    // Open WhatsApp
-    window.open(whatsappUrl, "_blank");
+    const result = await sendWhatsAppMessage(order.whatsappNumber, message);
 
-    toast.success(`WhatsApp notification sent to ${order.customerName}!`, {
-      icon: "📱",
-    });
+    if (result.success) {
+      toast.success(`WhatsApp sent to ${order.customerName}!`, {
+        id: "whatsapp",
+        icon: "📱",
+      });
+    } else {
+      // Fallback: Open WhatsApp Web
+      const whatsappUrl = `https://wa.me/91${order.whatsappNumber}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, "_blank");
+      
+      toast.success(`WhatsApp opened for ${order.customerName}!`, {
+        id: "whatsapp",
+        icon: "📱",
+      });
+    }
   };
 
   if (!stall) {
     return (
       <div className="max-w-2xl mx-auto text-center py-20">
         <h1 className="text-2xl font-bold text-gray-800">Stall not found</h1>
-        <Link to="/vendor" className="text-orange-500 mt-4 inline-block">
+        <Link to="/vendor" className="text-purple-500 mt-4 inline-block">
           ← Back to stalls
         </Link>
       </div>
