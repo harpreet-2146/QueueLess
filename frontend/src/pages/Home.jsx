@@ -1,5 +1,6 @@
 import { stalls } from "../data/stalls";
 import StallCard from "../components/StallCard";
+import SeatAvailability from "../components/SeatAvailability";
 import { Search } from "lucide-react";
 import { useState } from "react";
 
@@ -23,6 +24,11 @@ const Home = () => {
         <p className="text-gray-500">
           Choose a stall and order ahead. We'll notify you when it's ready!
         </p>
+      </div>
+
+      {/* Seat Availability - NEW! */}
+      <div className="mb-8">
+        <SeatAvailability />
       </div>
 
       {/* Search */}
